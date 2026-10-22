@@ -20,14 +20,17 @@ def main():
         api_key=api_key
     )
 
+    messages = [
+            {"role": "user", "content": args.user_prompt},
+    ]
+
+    generate_content(client, messages)
+
+
+def generate_content(client: OpenAI, messages: list[dict[str, str]]):
     response = client.chat.completions.create(
         model="openrouter/free",
-        messages=[
-            {
-                "role": "user",
-                "content": args.user_prompt,
-            }
-        ],
+        messages=messages,
     )
 
     if response.usage is None:
@@ -36,8 +39,6 @@ def main():
     print(f"Prompt tokens: {response.usage.prompt_tokens}")
     print(f"Response tokens: {response.usage.completion_tokens}")
     print(response.choices[0].message.content)
-
-
 
 
 if __name__ == "__main__":
