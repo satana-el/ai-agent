@@ -7,6 +7,7 @@ from openai import OpenAI
 def main():
     parser = argparse.ArgumentParser(description="Chatbot")
     parser.add_argument("user_prompt", type=str, help="User prompt")
+    parser.add_argument("--verbose", action="store_true", help="Enable verbose output")
     args = parser.parse_args()
 
     load_dotenv()
@@ -24,10 +25,10 @@ def main():
             {"role": "user", "content": args.user_prompt},
     ]
 
-    generate_content(client, messages)
+    generate_content(client, messages, args.verbose)
 
 
-def generate_content(client: OpenAI, messages: list[dict[str, str]]):
+def generate_content(client: OpenAI, messages: list[dict[str, str]], verbose=False) -> None:
     response = client.chat.completions.create(
         model="openrouter/free",
         messages=messages,
@@ -35,9 +36,11 @@ def generate_content(client: OpenAI, messages: list[dict[str, str]]):
 
     if response.usage is None:
         raise RuntimeError("Failed to get response")
-
-    print(f"Prompt tokens: {response.usage.prompt_tokens}")
-    print(f"Response tokens: {response.usage.completion_tokens}")
+    
+    if verbose:
+        print(f"User prompt: {messages[0]["content"]}")
+        print(f"Prompt tokens: {response.usage.prompt_tokens}")
+        print(f"Response tokens: {response.usage.completion_tokens}")
     print(response.choices[0].message.content)
 
 
