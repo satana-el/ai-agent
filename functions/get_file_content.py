@@ -16,3 +16,21 @@ def get_file_content(working_directory: str, file_path: str) -> str:
         if f.read(1):
             file_content_string +=  f'[...File "{file_path}" truncated at {MAX_CHARS} characters]'
     return file_content_string
+
+schema_get_file_content= {
+    "type": "function",
+    "function": {
+        "name": "get_file_content",
+        "description": "Reads and retruns the contents of a file relative to the working directory.",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "file_path": {
+                    "type": "string",
+                    "description": "Path to the files to read contents from, relative to the working directory (default is the working directory itself)",
+                },
+            },
+            "required": ["file_path"],
+        },
+    },
+}

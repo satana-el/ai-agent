@@ -38,3 +38,28 @@ def run_python_file(
 
     return output_str
 
+schema_run_python_file= {
+    "type": "function",
+    "function": {
+        "name": "run_python_file",
+        "description": "Runs a python file in a specified directory relative to the working directory",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "file_path": {
+                    "type": "string",
+                    "description": "Path of the python file, relative to the working directory (default is the working directory itself)",
+                },
+            },
+            "type": "object",
+            "properties": {
+                "args": {
+                    "type": "array",
+                    "description": "Any other optional arguments to be passed when running the pythong file.",
+                },
+            },
+            "required" : ["file_path"],
+        },
+    },
+}
+
